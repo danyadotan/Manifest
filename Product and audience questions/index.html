@@ -1,0 +1,738 @@
+<!-- @template name="Landing" description="A one-page landing in the system's own voice — an invented product (Daybreak: a morning news digest), serif hero, dateline-and-index head, feature columns, plate-separated photograph, sign-up close" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Manifest — the desk that takes a product to market</title>
+<script src="./ds-base.js"></script>
+<style>
+/* Template scaffolding — page layout and web-scale sizing only; every color,
+   font, radius and shadow comes from ../../styles.css. The voice is the
+   deck's, re-derived for a scrolling page: newsprint — hierarchy
+   from the serif scale and NEGATIVE SPACE alone (this system draws no
+   boxes, and no rules BETWEEN sections — the head rules around the
+   dateline rail are the one exception: front-page furniture, not
+   dividers), justified body in columns with real hyphenation,
+   process color used small and deliberately, the photograph printed as
+   its four process plates.
+
+   THE RHYTHM: a 28px leading unit (17px Source Serif body at ~1.65), 14px
+   half-step; line-heights and block margins in unit multiples, heads
+   cap-trimmed, ?baselines/B to review. The deck's seat-pinning relaxes to
+   per-block discipline on a fluid page. The system's own interface
+   components (nav, buttons, inputs) keep their styles.css leading.
+
+   THE LANDING LAWS (shared by all six systems' landing templates):
+   #1 display headers break per sentence (.line spans); #2 the landing
+   advertises an invented product played straight — broadsheet's is
+   Daybreak, a five-minute morning news digest, written like the paper it
+   is; #3 spacing is cluster-scoped (display leading ratio-governed ≈1.08
+   for the serif's long extenders — the display-block lattice exemption —
+   tight single-unit gaps inside a cluster, the air between sections); #4
+   no hero eyebrow — the nav brand names the product.
+
+   Optical left alignment: the deck's measured Source Serif 4 value
+   carries verbatim (-0.035em where caps lead a display line). */
+:root {
+  --leading: 28px;
+  --half: 14px;
+  --edge: clamp(20px, 5vw, 72px);
+  --measure: 58ch;
+}
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; text-wrap: pretty; }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 var(--edge); }
+/* the component demo pads the masthead with its own spacing; on the page the
+   masthead's contents take the page gutter and sit on the wrap's text axis
+   (padding-only — full-width paint such as a masthead rule is untouched) */
+.nav { padding-inline: max(var(--edge), calc((100% - 1200px) / 2 + var(--edge))); }
+.nav a { white-space: nowrap; }
+.nav a[aria-current='location'] { color: var(--color-accent-700); } /* in-page anchor,
+   not a page link — 'location' is the truthful value. The 700 step, not the
+   base accent: at 13px this is small text, where the base cyan's 3.7:1
+   large-text value does not reach (the same call as .ix-num.spot) */
+@media (max-width: 480px) { .nav a { display: none; } } /* phone width: the
+   masthead keeps brand + the one action; the section links return with room
+   (layout-only — the component's look is untouched) */
+
+/* — kicker (a section slug in ink — the newspaper's own furniture. The
+   deck cut eyebrow kickers because a slide's title carries the slide; a
+   scrolling page has no such carrier between sections, so the slug earns
+   its place as wayfinding — and the hero still takes none, per the laws) — */
+.kicker {
+  display: block; font-size: 13px; line-height: var(--half);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 70%, transparent); /* small-text ink on the
+     paper ground: 70% measures 5.8:1 (55% is the deck's 24px large-text
+     furniture convention; at 13px the 4.5:1 bar applies and 55% is 3.7:1) */
+  font-feature-settings: "tnum" 1;
+  margin: 0 0 calc(var(--leading) - var(--half));
+}
+
+/* — hero — */
+.hero { padding: calc(4 * var(--leading)) 0 calc(3 * var(--leading)); }
+.display {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(42px, 6vw, 80px);
+  line-height: clamp(45.5px, 6.5vw, 86.5px); /* law #3: ratio-governed ≈1.08 —
+     the serif's ascenders/descenders need a hair more lead than the sans
+     systems; the display-block lattice exemption */
+  letter-spacing: -0.02em; margin: 0;
+  margin-left: -0.035em; /* optical left alignment — the deck's measured Source Serif 4 value */
+  text-box: trim-both cap alphabetic;
+}
+.display .line { display: block; } /* law #1 */
+.hero .sub { font-size: 17px; line-height: var(--leading); max-width: var(--measure);
+  margin: calc(1.5 * var(--leading) - 1cap) 0 0;
+  text-box: trim-both cap alphabetic; }
+.hero .row { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--leading); }
+
+/* — the front page's head furniture (this system diverges from the shared
+   stat-row chassis here): a dateline rail seated between newspaper rules —
+   the head pair is 2px over 1px, full-strength ink, because head furniture
+   prints black, never the divider gray — and the morning's claims set as an
+   INDEX with dot leaders, the way a front page points into its own pages.
+   Rhythm: the rail is 1.5 units tall (half-step leading + half-step padding
+   each side), index rows run one unit each, rules sit on the seams. — */
+.frontpage { padding: calc(2 * var(--leading)) 0 calc(2.5 * var(--leading)); }
+.rule-head { height: 5px; border: 0; margin: 0;
+  border-top: 2px solid var(--color-text);
+  border-bottom: 1px solid var(--color-text); }
+.rule-cut { height: 0; border: 0; border-top: 1px solid var(--color-text); margin: 0; }
+.dateline { display: flex; justify-content: space-between; flex-wrap: wrap;
+  gap: var(--half) var(--leading); margin: 0; padding: var(--half) 0;
+  font-size: 13px; line-height: var(--half); letter-spacing: 0.08em; text-transform: uppercase;
+  font-feature-settings: "pnum" 1;
+  color: color-mix(in srgb, var(--color-text) 70%, transparent); /* 5.8:1 — see .kicker */ }
+.index { display: grid; grid-template-columns: 1fr 1fr;
+  gap: var(--half) calc(2.5 * var(--leading));
+  padding: calc(var(--leading) - var(--half)) 0 var(--leading); }
+.ix { display: flex; align-items: baseline; gap: 8px; margin: 0;
+  font-size: 15.5px; line-height: var(--leading); }
+.ix-leader { flex: 1; min-width: 28px; align-self: flex-end; margin-bottom: 0.34em;
+  border-bottom: 1px dotted color-mix(in srgb, var(--color-text) 45%, transparent); }
+  /* the leader dots sit decoratively below the baseline run; the 45% mix keeps
+     them quieter than the entries they join */
+.ix-num { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 17px; font-feature-settings: "pnum" 1; }
+  /* index figures are page-number furniture, not display numerals — body-adjacent
+     scale, proportional digits per the figure policy */
+.ix-num.spot { color: var(--color-accent-700); } /* the one process-color figure
+     the deck spends per page. At 17px this is small text, so the base cyan's
+     3.7:1 large-text value does not reach — the 700 step measures 5.7:1 on
+     the paper ground */
+
+/* — feature columns (the deck's own column grammar: JUSTIFIED serif copy
+   with real hyphenation, whitespace between columns — no rules, no cards;
+   serif heads at body-adjacent scale) — */
+.features { padding: calc(3 * var(--leading)) 0 calc(2.5 * var(--leading)); }
+.cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(1.5 * var(--leading)) clamp(28px, 4vw, 64px);
+  margin-top: calc(var(--leading) - var(--half)); }
+.col h2 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 24px; line-height: var(--leading); letter-spacing: -0.01em;
+  margin: 0; text-box: trim-both cap alphabetic; }
+.col p { font-size: 15.5px; line-height: var(--leading); margin: calc(var(--leading) - 1cap) 0 0;
+  color: color-mix(in srgb, var(--color-text) 78%, transparent);
+  text-align: justify; hyphens: auto; hyphenate-limit-chars: 6 3 3; /* the paper's own setting */
+  text-box: trim-both cap alphabetic; }
+
+/* — imagery split (review round 2 of the divergence, Barron's call: the
+   photograph takes the system's showcase treatment — figure.cmyk with a
+   .print wrapper, the four process plates run live by the compound filter
+   the system ships in print-plates.js (inlined in the page's bundle). One
+   swappable image. Round 3, also Barron: hover gathers the plates into
+   register (the press driver in print-plates.js — the old :hover was a
+   hard cut), the pointer leans the registration a breath as it roams,
+   and the figure lets the sheet edges overhang (overflow below) instead
+   of cropping them flat. Round 4, also Barron: no films-lift at the end
+   of the gather — the driver purifies the plate inks on the same ease,
+   so the converged merge IS the photograph and nothing swaps. .halftone stays the
+   system's simpler screen for interface imagery, per
+   foundations/image.html) — */
+.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--leading) clamp(24px, 5vw, 96px); align-items: center;
+  padding: calc(2 * var(--leading)) 0 calc(3 * var(--leading)); }
+.split-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 32px; line-height: calc(1.5 * var(--leading)); letter-spacing: -0.015em;
+  margin: 0; text-box: trim-both cap alphabetic; }
+.split-copy .note { font-size: 15.5px; line-height: var(--leading);
+  color: color-mix(in srgb, var(--color-text) 78%, transparent);
+  margin: calc(var(--leading) - 1cap) 0 0; max-width: 48ch;
+  text-align: justify; hyphens: auto; hyphenate-limit-chars: 6 3 3;
+  text-box: trim-both cap alphabetic; }
+.split-figure { margin: 0; }
+.split-figure.cmyk { overflow: visible; } /* divergence round 3 (Barron: "it
+   crops the effect") — the rebuilt #sep-all clips each plate to its own
+   sheet (print-plates.js), so nothing solid paints outside them and the
+   misregistered sheet edges can overhang the box instead of being
+   guillotined flat; the dot screen stays on the box, the films sticking
+   out from under it unscreened */
+.split-figure .print { aspect-ratio: 986 / 660; } /* the bundled color
+   photograph's natural ratio pins the box, so a swapped image cover-crops
+   into the same frame (cover framing is the component's own; width and
+   slot sizing come with .cmyk .print in styles.css) */
+
+/* — the test ledger: the one tabular block on the page. The system's .table
+   carries the themed header and row rules, so the section adds only rhythm —
+   figures on tabular numerals, the winning row's figure in the page's second
+   spot color (magenta, the rarer accent, used once) — */
+.ledger { padding: calc(2 * var(--leading)) 0 calc(2.5 * var(--leading)); }
+.ledger h2 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 32px; line-height: calc(1.5 * var(--leading)); letter-spacing: -0.015em;
+  margin: 0; text-box: trim-both cap alphabetic; }
+.ledger .note { font-size: 15.5px; line-height: var(--leading); max-width: var(--measure);
+  color: color-mix(in srgb, var(--color-text) 78%, transparent);
+  margin: calc(var(--leading) - 1cap) 0 0; text-box: trim-both cap alphabetic; }
+.ledger .table { margin-top: var(--leading); font-size: 15.5px;
+  font-feature-settings: "tnum" 1; }
+.ledger .table td.n, .ledger .table th.n { text-align: right; }
+.ledger .won { color: var(--color-accent-2-700); } /* the second accent, spent once —
+   the 700 step because these are small-text figures */
+.ledger .after { font-size: 13px; line-height: var(--leading);
+  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+  margin: calc(var(--leading) - 1cap) 0 0; }
+@media (max-width: 720px) {
+  .ledger .table { display: block; overflow-x: auto; } /* five columns do not fit a
+     phone measure; the table scrolls rather than crushing the figures */
+}
+
+/* — pull quote (the serif's TRUE ITALIC — the paper's voice for quotes,
+   never a synthesized oblique; hangs at the deck's measured advances) — */
+.quote { padding: calc(2.5 * var(--leading)) 0 calc(3.5 * var(--leading)); }
+.quote blockquote {
+  font-family: var(--font-heading); font-style: italic; font-weight: 400; /* the body weight —
+     the serif's true italic is loaded at 400, never a synthesized oblique */
+  font-size: clamp(24px, 2.6vw, 34px); line-height: calc(1.5 * var(--leading));
+  letter-spacing: -0.01em; max-width: 34ch; margin: 0;
+  text-indent: -0.475em; /* hang the opening “ (the deck's measured advance in the italic) */
+  text-box: trim-both cap alphabetic;
+}
+.quote figcaption { font-size: 15.5px; line-height: var(--leading);
+  color: color-mix(in srgb, var(--color-text) 70%, transparent); /* 5.8:1 — see .kicker */
+  margin: calc(2 * var(--leading) - 1cap) 0 0; /* two grid units below the quote's
+     last baseline — one reads as part of the quote block; the attribution needs air */
+  text-indent: -1.045em; /* hang the leading em-dash + space (measured in the Regular) */
+  text-box: trim-both cap alphabetic; }
+
+@media (max-width: 720px) {
+  /* the phone gutter (--edge bottoms out at 20px) is narrower than the hung
+     marks' measured advances, so a hung “ or em-dash would press into or past
+     the viewport edge — seat the quote flush below this width; the hang
+     returns with the wider gutter */
+  .quote blockquote, .quote figcaption { text-indent: 0; }
+}
+
+/* — close (paper stays paper: no bands, no fields — the close is a serif
+   statement with the signup beneath, parted from the page by air alone) — */
+.close { padding: calc(2.5 * var(--leading)) 0 calc(2 * var(--leading)); }
+.close h3 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 24px; line-height: var(--leading); margin: 0; text-box: trim-both cap alphabetic; }
+.close .sub { font-size: 15.5px; line-height: var(--leading);
+  color: color-mix(in srgb, var(--color-text) 78%, transparent);
+  margin: calc(var(--leading) - 1cap) 0 0; max-width: var(--measure); text-box: trim-both cap alphabetic; }
+.signup { display: flex; gap: var(--space-3); align-items: stretch; max-width: 480px;
+  margin-top: var(--leading); }
+.signup .input { flex: 1; }
+.signup .input, .signup .btn { min-height: 36px; } /* one control height floor; the row
+  stretches, so whichever of the pair is taller sets both and they read as one row */
+footer { padding: calc(2 * var(--leading)) 0; font-size: 13px; line-height: var(--leading);
+  color: color-mix(in srgb, var(--color-text) 70%, transparent); /* 5.8:1 — see .kicker */ }
+
+/* — responsive collapse — */
+@media (max-width: 1080px) {
+  /* three justified columns fall under ~30ch here and the word spaces open
+     into rivers; two columns hold the measure at ~40ch+ until the phone
+     single column takes over. The odd third column spans the full row at
+     the body measure — a wide bottom item, not an orphan beside a hole */
+  /* six columns divide evenly into two at this width, so the odd-column
+     exception the three-up layout needed does not apply here */
+  .cols { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 720px) {
+  .hero { padding-top: calc(2.5 * var(--leading)); }
+  .index { grid-template-columns: 1fr; }
+  .cols { grid-template-columns: 1fr; }
+  .split { grid-template-columns: 1fr; }
+  .split-figure { order: -1; }
+}
+
+/* — Tab: the sideline assistant. Introduces himself when the page opens, then
+   shrinks to a tab on the right sideline, seated upper-middle. Paper stays
+   paper — this is the one boxed, elevated thing on the page (a discrete item,
+   per the system's card rule), set in the serif like everything else. —  */
+.tab-dock { position: fixed; right: 0; top: 28vh; z-index: 60;
+  font-family: var(--font-body); }
+.tab-handle {
+  appearance: none; border: 0; cursor: pointer; display: block;
+  writing-mode: vertical-rl; padding: var(--space-4) 9px;
+  background: var(--color-accent); color: var(--color-neutral-100);
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  transition: background 160ms ease, opacity 220ms ease, transform 220ms ease;
+}
+.tab-handle:hover { background: var(--color-accent-600); }
+.tab-handle:active { background: var(--color-accent-700); }
+.tab-card {
+  position: absolute; top: 0; right: 0; width: 340px; max-width: calc(100vw - 32px);
+  background: var(--color-neutral-100); color: var(--color-text);
+  border-radius: 20px 0 0 20px;
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-4) var(--space-4) var(--space-3);
+  transform: translateX(100%); opacity: 0; visibility: hidden;
+  transition: transform 420ms cubic-bezier(.22,.61,.36,1), opacity 260ms ease, visibility 0s linear 420ms;
+}
+.tab-dock[data-open='true'] .tab-card { transform: translateX(0); opacity: 1; visibility: visible;
+  transition: transform 420ms cubic-bezier(.22,.61,.36,1), opacity 260ms ease, visibility 0s; }
+.tab-dock[data-open='true'] .tab-handle { opacity: 0; pointer-events: none; transform: translateX(6px); }
+.tab-card .kicker { margin-bottom: 6px; }
+.tab-card h4 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 22px; line-height: var(--leading); letter-spacing: -0.01em; margin: 0;
+  text-box: trim-both cap alphabetic; }
+.tab-card p { font-size: 15px; line-height: 25px; margin: 14px 0 0;
+  color: color-mix(in srgb, var(--color-text) 80%, transparent); }
+/* the intro arrives as a pile of messages — Tab texting the reader, each line
+   its own bubble, landing in sequence */
+.tab-thread { display: flex; flex-direction: column; align-items: flex-start;
+  gap: 7px; margin-top: 16px; }
+.bub { margin: 0; font-size: 15px; line-height: 23px; max-width: 94%;
+  padding: 9px 14px; border-radius: 18px 18px 18px 6px;
+  background: var(--color-neutral-200);
+  color: color-mix(in srgb, var(--color-text) 88%, transparent);
+  opacity: 0; transform: translateY(6px) scale(0.97); }
+.tab-dock[data-open='true'] .bub { animation: bub-in 320ms cubic-bezier(.22,.61,.36,1) both; }
+.tab-dock[data-open='true'] .bub:nth-child(1) { animation-delay: 220ms; }
+.tab-dock[data-open='true'] .bub:nth-child(2) { animation-delay: 700ms; }
+.tab-dock[data-open='true'] .bub:nth-child(3) { animation-delay: 1180ms; }
+@keyframes bub-in { to { opacity: 1; transform: none; } }
+.tab-card .tab-row { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--leading); }
+.tab-card .btn { font-size: 14px; }
+.tab-close { position: absolute; top: 10px; right: 10px; appearance: none; border: 0;
+  background: none; cursor: pointer; line-height: 1; padding: 6px; border-radius: var(--radius-sm);
+  color: color-mix(in srgb, var(--color-text) 60%, transparent);
+  font-family: var(--font-heading); font-size: 18px;
+  transition: background 140ms ease, color 140ms ease; }
+.tab-close:hover { color: var(--color-text);
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent); }
+@media (max-width: 720px) {
+  .tab-dock { top: auto; bottom: 16px; }
+  .tab-card { top: auto; bottom: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tab-card, .tab-handle { transition: none; }
+  .tab-dock[data-open='true'] .bub { animation-duration: 1ms; animation-delay: 0ms; }
+}
+
+/* — the press run: the named mechanism, five stages with the clock against
+   each. Numbered serif figures, no boxes — the stages are columns of air —  */
+.run { padding: calc(3 * var(--leading)) 0 calc(2.5 * var(--leading)); }
+.run h2, .case h2, .bring h2 {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 32px; line-height: calc(1.5 * var(--leading)); letter-spacing: -0.015em;
+  margin: 0; text-box: trim-both cap alphabetic; }
+.run .note, .case .note, .bring .note {
+  font-size: 15.5px; line-height: var(--leading); max-width: var(--measure);
+  color: color-mix(in srgb, var(--color-text) 78%, transparent);
+  margin: calc(var(--leading) - 1cap) 0 0; text-box: trim-both cap alphabetic; }
+.run-steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: calc(1.5 * var(--leading)) clamp(20px, 2.6vw, 40px); margin-top: calc(1.5 * var(--leading)); }
+.step .n { display: block; font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 36px; line-height: var(--leading); color: var(--color-accent-700);
+  font-feature-settings: "tnum" 1; }
+.step h3 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 20px; line-height: var(--leading); letter-spacing: -0.01em;
+  margin: calc(var(--half)) 0 0; text-box: trim-both cap alphabetic; }
+.step .when { display: block; font-size: 13px; line-height: var(--half);
+  letter-spacing: 0.08em; text-transform: uppercase; font-feature-settings: "tnum" 1;
+  color: color-mix(in srgb, var(--color-text) 70%, transparent); margin-top: 8px; }
+.step p { font-size: 15px; line-height: 25px; margin: var(--half) 0 0;
+  color: color-mix(in srgb, var(--color-text) 78%, transparent); }
+@media (max-width: 1080px) { .run-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .run-steps { grid-template-columns: 1fr; } }
+
+/* — bring the product: the mid-page diagnostic. Tab reads a link and returns
+   the shape of the report; the scan and the report are revealed by script —  */
+.bring { padding: calc(2.5 * var(--leading)) 0 calc(2.5 * var(--leading)); }
+.bring-form { display: flex; gap: var(--space-3); align-items: stretch;
+  max-width: 620px; margin-top: var(--leading); flex-wrap: wrap; }
+.bring-form .input { flex: 1 1 260px; }
+.bring-form .input, .bring-form .btn { min-height: 36px; }
+.bring-hint { font-size: 13px; line-height: var(--leading); margin: 6px 0 0;
+  color: color-mix(in srgb, var(--color-text) 70%, transparent); }
+.scan { list-style: none; padding: 0; margin: var(--leading) 0 0; max-width: 620px;
+  display: grid; gap: 4px; }
+.scan li { font-size: 15px; line-height: 25px; display: flex; gap: 10px;
+  color: color-mix(in srgb, var(--color-text) 45%, transparent); }
+.scan li .mark { font-family: var(--font-heading); width: 1.2em; flex: none; }
+.scan li[data-done] { color: color-mix(in srgb, var(--color-text) 82%, transparent); }
+.scan li[data-done] .mark { color: var(--color-accent-700); }
+.report { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--leading) clamp(28px, 4vw, 64px); margin-top: calc(1.5 * var(--leading)); }
+.rep h3 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 20px; line-height: var(--leading); margin: 0; text-box: trim-both cap alphabetic; }
+.rep p { font-size: 15px; line-height: 25px; margin: var(--half) 0 0;
+  color: color-mix(in srgb, var(--color-text) 78%, transparent); }
+.report-foot { grid-column: 1 / -1; font-size: 15.5px; line-height: var(--leading);
+  margin: 0; max-width: var(--measure); }
+.report-foot a { color: var(--color-accent-700); } /* body-size accent text takes the
+   700 step, per the system's guide — the base cyan is a large-text value */
+@media (max-width: 720px) { .report { grid-template-columns: 1fr; } }
+
+/* — the case file: one account, the figures before and after, the creative
+   that won it. Magenta — the rarer accent — marks the win, here and in the
+   ledger, and nowhere else —  */
+.case { padding: calc(2.5 * var(--leading)) 0 calc(2 * var(--leading)); }
+.case-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--leading) clamp(24px, 5vw, 80px); align-items: start;
+  margin-top: calc(1.5 * var(--leading)); }
+.delta { display: grid; gap: var(--leading); }
+.delta .met { display: block; font-size: 13px; line-height: var(--half);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 70%, transparent); }
+.delta .pair { display: flex; align-items: baseline; gap: 12px; margin: 10px 0 0;
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-feature-settings: "tnum" 1; }
+.delta .was { font-size: 22px; color: color-mix(in srgb, var(--color-text) 62%, transparent); }
+.delta .arrow { font-size: 17px; color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+.delta .now { font-size: 34px; line-height: calc(1.5 * var(--leading)); color: var(--color-accent-2-700); }
+.case-figure { margin: 0; }
+.case-figure .print { aspect-ratio: 4 / 5; }
+.case-figure figcaption { font-size: 13px; line-height: var(--leading);
+  color: color-mix(in srgb, var(--color-text) 70%, transparent); margin-top: var(--half); }
+.case blockquote { font-family: var(--font-heading); font-style: italic; font-weight: 400;
+  font-size: 22px; line-height: var(--leading); max-width: 40ch;
+  margin: calc(1.5 * var(--leading)) 0 0; }
+.case .by { font-size: 15.5px; line-height: var(--leading);
+  color: color-mix(in srgb, var(--color-text) 70%, transparent); margin: var(--half) 0 0; }
+@media (max-width: 860px) { .case-grid { grid-template-columns: 1fr; } }
+
+/* — the close: the paid diagnostic as the front door —  */
+.close .terms { list-style: none; padding: 0; margin: var(--leading) 0 0; max-width: var(--measure);
+  display: grid; gap: 4px; font-size: 15.5px; line-height: var(--leading); }
+.close .terms li { display: flex; gap: 10px;
+  color: color-mix(in srgb, var(--color-text) 82%, transparent); }
+.close .terms .mark { color: var(--color-accent-700); font-family: var(--font-heading); flex: none; }
+.close .price { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 22px; line-height: var(--leading); margin: var(--leading) 0 0;
+  font-feature-settings: "tnum" 1; }
+.close .price small { font-family: var(--font-body); font-weight: 400; font-size: 15.5px;
+  color: color-mix(in srgb, var(--color-text) 70%, transparent); }
+
+/* Review aid: the 28px rhythm drawn as hairlines — debug chrome, toggled by
+   ?baselines or the B key, never part of the look. */
+body[data-baselines] { position: relative; }
+body[data-baselines]::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(to bottom,
+      color-mix(in srgb, var(--color-accent) 35%, transparent) 0 1px,
+      transparent 1px var(--leading)),
+    repeating-linear-gradient(to bottom,
+      transparent 0 var(--half),
+      color-mix(in srgb, var(--color-accent) 16%, transparent) var(--half) calc(var(--half) + 1px),
+      transparent calc(var(--half) + 1px) var(--leading));
+}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <span class="nav-brand">Manifest</span>
+  <a href="#run" aria-current="location">The press run</a>
+  <a href="#bring">Bring the product</a>
+  <a href="#case">Case file</a>
+  <button type="button" class="btn btn-primary">Book the desk</button>
+</nav>
+<div class="wrap">
+
+  <section class="hero">
+    <!-- the masthead takes the cover grammar's plate construction (.cmyk-head,
+         styles.css; divergence round 3, Barron: "use both") — each law-#1 line
+         keeps its own block, the paper span carries the line's one real copy,
+         and the three plate repeats are aria-hidden, so the h1 reads once -->
+    <h1 class="display"><span class="line cmyk-head"><span class="paper">Any product.</span><span class="plate plate-c" aria-hidden="true">Any product.</span><span class="plate plate-m" aria-hidden="true">Any product.</span><span class="plate plate-y" aria-hidden="true">Any product.</span></span> <span class="line cmyk-head"><span class="paper">Every reason to buy it.</span><span class="plate plate-c" aria-hidden="true">Every reason to buy it.</span><span class="plate plate-m" aria-hidden="true">Every reason to buy it.</span><span class="plate plate-y" aria-hidden="true">Every reason to buy it.</span></span></h1>
+    <p class="sub">Manifest is a desk of AI agents, run by a partner who owns your account. Nine days from your link to the first paid proof: the category read to the bone, the buyer worth winning named, one line that moves them, and the campaigns that prove it on Meta, Instagram and TikTok — tested against themselves until the numbers hold.</p>
+    <div class="row">
+      <a class="btn btn-primary" href="#bring">Bring the product</a>
+      <a class="btn btn-ghost" href="#case">Read the case file</a>
+    </div>
+  </section>
+
+  <section class="frontpage" aria-label="Manifest, by the numbers">
+    <hr class="rule-head" />
+    <p class="dateline">
+      <span>Edition № 001</span>
+      <span>Brief to first ad: nine days</span>
+      <span>Meta · Instagram · TikTok</span>
+      <span>By retainer, by invitation</span>
+    </p>
+    <hr class="rule-cut" />
+    <div class="index">
+      <p class="ix"><span>Days to the first paid proof</span><span class="ix-leader"></span><span class="ix-num spot">9</span></p>
+      <p class="ix"><span>Partner who owns your account</span><span class="ix-leader"></span><span class="ix-num">1</span></p>
+      <p class="ix"><span>Hours to a full category read</span><span class="ix-leader"></span><span class="ix-num">48</span></p>
+      <p class="ix"><span>Agents on the desk, one brief</span><span class="ix-leader"></span><span class="ix-num">9</span></p>
+      <p class="ix"><span>Creative variants per launch</span><span class="ix-leader"></span><span class="ix-num">120</span></p>
+      <p class="ix"><span>Prompts in the library, proven</span><span class="ix-leader"></span><span class="ix-num">400</span></p>
+    </div>
+    <hr class="rule-cut" />
+  </section>
+
+  <section class="run" id="run">
+    <span class="kicker">The method, named</span>
+    <h2>The Press Run</h2>
+    <p class="note">Five stages, one brief, nine days to the first paid proof. Every stage has a clock against it and an owner who signs it off &mdash; you see the work at each one, not a reveal at the end.</p>
+    <div class="run-steps">
+      <div class="step">
+        <span class="n">1</span>
+        <h3>The read</h3>
+        <span class="when">First 48 hours</span>
+        <p>The category taken apart: buyers, churn, every competitor&rsquo;s promise and where it quietly fails. Sources attached, argument included.</p>
+      </div>
+      <div class="step">
+        <span class="n">2</span>
+        <h3>The call</h3>
+        <span class="when">Day three</span>
+        <p>The buyer worth winning is named &mdash; budget, trigger, objection, where to reach them. So is the buyer to ignore. That call is usually the valuable one.</p>
+      </div>
+      <div class="step">
+        <span class="n">3</span>
+        <h3>The plate</h3>
+        <span class="when">Day five</span>
+        <p>The message is cut down to one sentence, then built back into hooks, scripts and landing copy that all say the same true thing.</p>
+      </div>
+      <div class="step">
+        <span class="n">4</span>
+        <h3>The proof</h3>
+        <span class="when">Day nine</span>
+        <p>First tests live at real spend, one channel at a time, every hook against a control. The ledger opens to you the day it starts.</p>
+      </div>
+      <div class="step">
+        <span class="n">5</span>
+        <h3>The press</h3>
+        <span class="when">Week three onward</span>
+        <p>Budget follows the winner, the library keeps what worked, and the accounts are structured so a single policy strike never takes the campaign down.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bring" id="bring">
+    <span class="kicker">Bring the product</span>
+    <h2>Give Tab a link. Get the read.</h2>
+    <p class="note">A site, a product page, a deck, an app listing &mdash; anything public. Tab reads the brand as it stands today, scores every parameter below, and returns the brand read, the focus points, the positioning, the target and the outcomes worth chasing.</p>
+    <form class="bring-form" id="bring-form" novalidate>
+      <input class="input" type="url" id="bring-url" placeholder="https://your-product.com" aria-label="Link to your site, product page or deck" required />
+      <button type="submit" class="btn btn-primary">Run the read</button>
+    </form>
+    <p class="bring-hint">No login, nothing published. The full report lands in your inbox inside forty-eight hours.</p>
+
+    <ul class="scan" id="scan" hidden aria-live="polite">
+      <li data-step><span class="mark">&middot;</span><span>Reading the page &mdash; claims, proof, calls to action</span></li>
+      <li data-step><span class="mark">&middot;</span><span>Placing the category and the five nearest competitors</span></li>
+      <li data-step><span class="mark">&middot;</span><span>Testing the promise against what the market is asking for</span></li>
+      <li data-step><span class="mark">&middot;</span><span>Sizing the buyers, ranking them, finding the one to ignore</span></li>
+      <li data-step><span class="mark">&middot;</span><span>Cutting the first hooks and the channels to prove them on</span></li>
+    </ul>
+
+    <div class="report" id="report" hidden>
+      <div class="rep">
+        <h3>The brand, as it reads</h3>
+        <p>What a stranger understands in eight seconds, what they get wrong, and which sentence on your page is doing the damage.</p>
+      </div>
+      <div class="rep">
+        <h3>Focus points</h3>
+        <p>The three claims worth keeping, ranked by how hard they are to copy &mdash; and everything else, marked for cutting.</p>
+      </div>
+      <div class="rep">
+        <h3>Positioning</h3>
+        <p>Where you sit in the category today, where the open ground is, and the shortest honest move between the two.</p>
+      </div>
+      <div class="rep">
+        <h3>The target</h3>
+        <p>The buyer worth winning, with budget, trigger and objection &mdash; plus the segment to stop paying for.</p>
+      </div>
+      <div class="rep">
+        <h3>Outcomes</h3>
+        <p>What the first ninety days should return at your spend: the cost per lead to beat, the tests that get you there, and the order to run them in.</p>
+      </div>
+      <div class="rep">
+        <h3>First three hooks</h3>
+        <p>Written, not described &mdash; ready to ship, each with the channel it belongs on and the control it runs against.</p>
+      </div>
+      <p class="report-foot">That is the shape of the read. Yours arrives filled in, with the sources attached and a partner&rsquo;s name on it &mdash; <a href="#subscribe">book the week</a>.</p>
+    </div>
+  </section>
+
+  <section class="split" id="creative">
+    <div class="split-copy">
+      <span class="kicker">Pre-production</span>
+      <h2 class="split-title">Built to stop the scroll</h2>
+      <p class="note">Creative is made the way a front page is made: hook first, in the first second, before anyone has decided to care. Hundreds of variants cut from one brief — thumbnails, first frames, scripts, captions — then shipped in structured A/B tests so the winner is a measurement and not a matter of taste.</p>
+    </div>
+    <figure class="split-figure cmyk">
+      <div class="print"><image-slot id="photo-split" shape="rect" src="assets/photo-color.jpg" role="img" aria-label="Campaign creative printed as its four process plates, slightly out of register" placeholder="Drop a campaign still or product photograph here"></image-slot></div>
+    </figure>
+  </section>
+
+
+  <section class="case" id="case">
+    <span class="kicker">Case file &mdash; account no. 041</span>
+    <h2>Six weeks, one named buyer</h2>
+    <p class="note">A premium home-equipment brand, $40k a month in media, flat for three quarters. The read found they were selling on price to a buyer who had never once bought on price. Same product, same budget, different buyer named on day three.</p>
+    <div class="case-grid">
+      <div class="delta">
+        <div>
+          <span class="met">Cost per lead</span>
+          <p class="pair"><span class="was">$52</span><span class="arrow">&rarr;</span><span class="now">$17</span></p>
+        </div>
+        <div>
+          <span class="met">Qualified leads per month</span>
+          <p class="pair"><span class="was">210</span><span class="arrow">&rarr;</span><span class="now">690</span></p>
+        </div>
+        <div>
+          <span class="met">Return on ad spend</span>
+          <p class="pair"><span class="was">1.4&times;</span><span class="arrow">&rarr;</span><span class="now">4.1&times;</span></p>
+        </div>
+        <!-- Attributed quote: drop in a real name, title and company, then uncomment.
+             An unnamed quote costs more credibility than it buys at this price point.
+        <blockquote>&ldquo;We had been describing the product to the wrong buyer for two years. They named the right one in a week, and the cost per lead fell by two thirds.&rdquo;</blockquote>
+        <p class="by">&mdash; Name, title, Company</p>
+        -->
+      </div>
+      <figure class="case-figure cmyk">
+        <div class="print"><image-slot id="photo-case" shape="rect" src="assets/photo-color.jpg" role="img" aria-label="The winning advertisement from account no. 041, printed as its four process plates" placeholder="Drop the winning ad creative here"></image-slot></div>
+        <figcaption>Variant C &mdash; the hook that took the budget on day three, and still holds it.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="ledger" id="ledger">
+    <span class="kicker">Last week&rsquo;s tests &mdash; account no. 058</span>
+    <h2>The winner is a number</h2>
+    <p class="note">Every hook ships against a control, at real spend, on one channel at a time. The ledger is open to you while it runs — a different account, live, four variants deep and mid-flight.</p>
+    <table class="table">
+      <thead>
+        <tr><th scope="col">Variant</th><th scope="col">Channel</th><th scope="col">Hook</th><th scope="col" class="n">CTR</th><th scope="col" class="n">Cost per lead</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>A &mdash; control</td><td>Meta feed</td><td>Price-led</td><td class="n">1.4%</td><td class="n">$31</td></tr>
+        <tr><td>B</td><td>Instagram reels</td><td>Objection-first</td><td class="n">2.9%</td><td class="n">$19</td></tr>
+        <tr><td>C</td><td>TikTok</td><td>Founder, unscripted</td><td class="n won">4.6%</td><td class="n won">$11</td></tr>
+        <tr><td>D</td><td>TikTok</td><td>Demo, no voice</td><td class="n">2.1%</td><td class="n">$24</td></tr>
+      </tbody>
+    </table>
+    <p class="after">Variant C took the budget on day three. The losing hooks are filed with their numbers, not deleted — a hook that failed in one category has won in another.</p>
+  </section>
+
+  <section class="close" id="subscribe">
+    <span class="kicker">The front door</span>
+    <h3>One week. Fixed fee. Then you decide.</h3>
+    <p class="sub">Nobody signs a retainer before they have seen us think. The way in is the diagnostic week &mdash; a fixed fee, a partner&rsquo;s name on the work, and a file you keep whatever you do next.</p>
+    <ul class="terms">
+      <li><span class="mark">&mdash;</span><span>The category read, with its sources attached</span></li>
+      <li><span class="mark">&mdash;</span><span>The buyer worth winning, and the one to stop paying for</span></li>
+      <li><span class="mark">&mdash;</span><span>One sentence, and the first three hooks cut from it</span></li>
+      <li><span class="mark">&mdash;</span><span>The opening test matrix, and the spend it needs to be read</span></li>
+    </ul>
+    <p class="price">$6,500 &mdash; one week. <small>Credited in full against your first month if you go on to the press run.</small></p>
+    <div class="signup">
+      <input class="input" type="email" placeholder="you@company.com" aria-label="Work email address" />
+      <button type="button" class="btn btn-primary">Book the week</button>
+    </div>
+  </section>
+
+  <footer>Manifest &mdash; deep research, sharp message, campaigns that pay for themselves.</footer>
+</div>
+<aside class="tab-dock" id="tab-dock" data-open="false" aria-label="Tab, the sideline assistant">
+  <button type="button" class="tab-handle" id="tab-handle" aria-expanded="false" aria-controls="tab-card">Ask Tab</button>
+  <div class="tab-card" id="tab-card" role="dialog" aria-modal="false" aria-labelledby="tab-name">
+    <button type="button" class="tab-close" id="tab-close" aria-label="Shrink Tab to the sideline">&times;</button>
+    <span class="kicker">The desk is in</span>
+    <h4 id="tab-name">Hello &mdash; I&rsquo;m Tab.</h4>
+    <div class="tab-thread">
+      <p class="bub">I sit beside the desk. Paste a link &mdash; your site, a product page, a deck.</p>
+      <p class="bub">I&rsquo;ll read the brand as it stands: positioning, focus points, the buyer worth winning, the outcomes to chase.</p>
+      <p class="bub">All before you speak to anyone here.</p>
+    </div>
+    <div class="tab-row">
+      <a class="btn btn-primary" href="#bring" id="tab-go">Bring the product</a>
+      <button type="button" class="btn btn-ghost" id="tab-later">Not now</button>
+    </div>
+  </div>
+</aside>
+<script src="image-slot.js"></script>
+<script>
+// Review aid: baseline-grid overlay — add ?baselines to the URL, or press B to toggle.
+(() => {
+  if (new URLSearchParams(location.search).has('baselines')) document.body.setAttribute('data-baselines', '');
+  addEventListener('keydown', (e) => {
+    const t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    if ((e.key === 'b' || e.key === 'B') && !e.metaKey && !e.ctrlKey && !e.altKey) document.body.toggleAttribute('data-baselines');
+  });
+})();
+</script>
+<script>
+// Tab: greets on open, then shrinks to the sideline tab on his own.
+(() => {
+  const dock = document.getElementById('tab-dock');
+  const handle = document.getElementById('tab-handle');
+  let timer = null;
+  const set = (open) => {
+    dock.dataset.open = open ? 'true' : 'false';
+    handle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+  const shrink = () => { clearTimeout(timer); timer = null; set(false); };
+  const hold = () => { if (timer) { clearTimeout(timer); timer = null; } };
+  setTimeout(() => { set(true); timer = setTimeout(shrink, 8000); }, 900);
+  dock.addEventListener('pointerenter', hold);
+  dock.addEventListener('focusin', hold);
+  handle.addEventListener('click', () => { hold(); set(true); });
+  document.getElementById('tab-close').addEventListener('click', shrink);
+  document.getElementById('tab-later').addEventListener('click', () => { shrink(); handle.focus(); });
+  document.getElementById('tab-go').addEventListener('click', () => {
+    shrink();
+    const url = document.getElementById('bring-url');
+    if (url) setTimeout(() => url.focus({ preventScroll: true }), 400);
+  });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && dock.dataset.open === 'true') shrink(); });
+})();
+</script>
+<script>
+// Bring the product: Tab reads the link, ticks each parameter, then shows the report shape.
+(() => {
+  const form = document.getElementById('bring-form');
+  const url = document.getElementById('bring-url');
+  const scan = document.getElementById('scan');
+  const report = document.getElementById('report');
+  const btn = form.querySelector('button');
+  const steps = [...scan.querySelectorAll('[data-step]')];
+  const quick = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let running = false;
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (running) return;
+    if (!url.value.trim()) { url.focus(); return; }
+    running = true;
+    btn.disabled = true; btn.textContent = 'Reading\u2026';
+    report.hidden = true;
+    scan.hidden = false;
+    steps.forEach((li) => { li.removeAttribute('data-done'); li.querySelector('.mark').textContent = '\u00b7'; });
+    const gap = quick ? 0 : 620;
+    steps.forEach((li, i) => setTimeout(() => {
+      li.setAttribute('data-done', '');
+      li.querySelector('.mark').textContent = '\u2713';
+    }, gap * (i + 1)));
+    setTimeout(() => {
+      report.hidden = false;
+      btn.disabled = false; btn.textContent = 'Run it again';
+      running = false;
+    }, gap * (steps.length + 1));
+  });
+})();
+</script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a437367d1ece1683',t:'MTc5MDgxMzA5Ng=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
